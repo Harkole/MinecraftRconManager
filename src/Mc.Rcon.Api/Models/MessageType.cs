@@ -1,6 +1,6 @@
 ﻿namespace Mc.Rcon.Api.Models
 {
-    public enum MessageTypes
+    public enum MessageType
     {
         Repsonse,
         Command = 2,
