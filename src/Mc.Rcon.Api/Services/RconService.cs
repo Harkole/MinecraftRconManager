@@ -1,10 +1,11 @@
-﻿using Mc.Rcon.Api.Models;
+﻿using Mc.Rcon.Api.Interfaces;
+using Mc.Rcon.Api.Models;
 using System.Net.Sockets;
 using System.Text;
 
 namespace Mc.Rcon.Api.Services
 {
-    public class RconService
+    public class RconService : IRconService
     {
         // Messages over this size will be truncated
         private const int MaximumMessageSize = 4096;
@@ -28,11 +29,7 @@ namespace Mc.Rcon.Api.Services
             _stream = _tcpClient.GetStream();
         }
 
-        /// <summary>
-        /// Provides the Authentication for communication
-        /// </summary>
-        /// <param name="password">The password to manage the server</param>
-        /// <returns>True if login successful</returns>
+        /// <inheritdoc />
         public bool Authenticate(string password)
         {
             Message message = new()
@@ -46,9 +43,7 @@ namespace Mc.Rcon.Api.Services
             return SendMessage(message, out Message _);
         }
 
-        /// <summary>
-        /// Closes the network connection and cleans up resources
-        /// </summary>
+        /// <inheritdoc />
         public void CloseConnection()
         {
             if (null != _stream)
@@ -64,12 +59,7 @@ namespace Mc.Rcon.Api.Services
             }
         }
 
-        /// <summary>
-        /// Sends the command as a message returning the server Message response
-        /// </summary>
-        /// <param name="command">The command to execute</param>
-        /// <param name="response">The servers response to the command, this maybe <c>string.Empty</c></param>
-        /// <returns>True if the command executed and was responseded to</returns>
+        /// <inheritdoc />
         public bool SendCommand(string command, out string response)
         {
             Message message = new()
